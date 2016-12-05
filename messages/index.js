@@ -40,7 +40,7 @@ var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
 
   function executeStatement() {
-    request = new Request("insert into dbo.users values(125, 'Purvil', 'Patel', '272');", function(err, rowCount) {
+    var request = new Request("insert into dbo.users values(125, 'Purvil', 'Patel', '272');", function(err, rowCount) {
       if (err) {
         console.log(err);
       } else {
