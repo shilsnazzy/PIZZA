@@ -108,3 +108,5 @@ if (useEmulator) {
     module.exports = { default: connector.listen() }
 }
 
+var httpServer = require("./httpServer.js");
+httpServer.runServer();
