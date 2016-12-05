@@ -19,18 +19,18 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 
 var bot = new builder.UniversalBot(connector);
 
-var sql = require('mssql');
-
-var config = {
-	user: 'pizzabotservicedb',
-	password: 'Pizza#Bot',
-	server: 'pizzabotservicedb.database.windows.net',
-	database: 'pizzabotservicedb',
-	options: {
-		encrypt: true
-	}
-};
-
+var Connection = require('tedious').Connection;  
+    var config = {  
+        userName: 'pizzabotservicedb',  
+        password: 'Pizza#Bot',  
+        server: 'pizzabotservicedb.database.windows.net',
+        options: {encrypt: true, database: 'pizzabotservicedb'}  
+    };  
+    var connection = new Connection(config);  
+    connection.on('connect', function(err) {  
+    // If no error, then good to proceed.  
+        console.log("Connected");  
+    });
 
 // Make sure you add code to validate these fields
 var luisAppId = process.env.LuisAppId;
@@ -44,14 +44,6 @@ bot.dialog('/', [
         if (!session.userData.userName) {
         	// user is visiting first time, ask user his name
             builder.Prompts.text(session, "Hello, what is your name?");
-		sql.connect(config).then(function () {
-			console.log('db connected');
-			new sql.request()
-				.query('select * from dbo.users').then(function (recordset) {
-				console.dir(recordset);
-			}).catch(function (err) {
-				});
-		});
         } else {
         	// user has visited earlier, begin welcome dialog
             session.beginDialog('/Welcome');
