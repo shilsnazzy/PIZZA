@@ -19,18 +19,43 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 
 var bot = new builder.UniversalBot(connector);
 
-var Connection = require('tedious').Connection;  
-    var config = {  
-        userName: 'pizzabotservicedb@pizzabotservicedb',  
-        password: 'Pizza#Bot',  
-        server: 'pizzabotservicedb.database.windows.net:1433',
-        options: {encrypt: true, database: 'pizzabotservicedb'}  
-    };  
-    var connection = new Connection(config);  
-    connection.on('connect', function(err) {  
-    // If no error, then good to proceed.  
-        console.log("Connected");  
+var Connection = require('tedious').Connection;
+    var config = {
+        userName: 'pizzabotservicedb',
+        password: 'Pizza#Bot',
+        server: 'pizzabotservicedb.database.windows.net',
+        // When you connect to Azure SQL Database, you need these next options.  
+        options: {
+            encrypt: true,
+            database: 'pizzabotservicedb'
+        }
+    };
+    var connection = new Connection(config);
+    connection.on('connect', function(err) {
+        // If no error, then good to proceed.  
+        console.log("Connected");
+        executeStatement();
     });
+
+    var Request = require('tedious').Request;
+
+  function executeStatement() {
+    request = new Request("insert into dbo.users values(125, 'Purvil', 'Patel', '272');", function(err, rowCount) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(rowCount + ' rows');
+      }
+    });
+
+    request.on('row', function(columns) {
+      columns.forEach(function(column) {
+        console.log(column.value);
+      });
+    });
+
+    connection.execSql(request);
+  }
 
 // Make sure you add code to validate these fields
 var luisAppId = process.env.LuisAppId;
