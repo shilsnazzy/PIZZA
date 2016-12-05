@@ -23,7 +23,7 @@ var Connection = require('tedious').Connection;
     var config = {  
         userName: 'pizzabotservicedb@pizzabotservicedb',  
         password: 'Pizza#Bot',  
-        server: 'pizzabotservicedb.database.windows.net',
+        server: 'pizzabotservicedb.database.windows.net:1433',
         options: {encrypt: true, database: 'pizzabotservicedb'}  
     };  
     var connection = new Connection(config);  
