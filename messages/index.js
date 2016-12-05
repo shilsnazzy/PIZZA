@@ -21,7 +21,7 @@ var bot = new builder.UniversalBot(connector);
 
 var Connection = require('tedious').Connection;  
     var config = {  
-        userName: 'pizzabotservicedb',  
+        userName: 'pizzabotservicedb@pizzabotservicedb',  
         password: 'Pizza#Bot',  
         server: 'pizzabotservicedb.database.windows.net',
         options: {encrypt: true, database: 'pizzabotservicedb'}  
