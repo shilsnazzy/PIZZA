@@ -50,6 +50,8 @@ var dialog= new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
+session.sebnd(JSON.stringify(session));
+session.send(args)
 })
 .matches('Greeting', [
 
