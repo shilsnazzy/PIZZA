@@ -51,29 +51,12 @@ var dialog= new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('None', (session, args) => {
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
 })
-.onDefault((session) => {
-    session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-});
-
-bot.dialog('/', dialog);
-
-// Add intent handlers
-dialog.matches('Greeting', [
+.matches('Greeting', [
 
     function(session) {
-        // if user is redirected from profile menu
-        if (isFromProfile) {
-            builder.Prompts.text(session, "Ok " + session.userData.userName + ". Enter your new user name.");
-            session.userData.userName = "";
-        }
-        // user name is not set
-        else if (!session.userData.userName || session.userData.userName == "" || session.userData.userName == undefined) {
-            // user is visiting first time, ask user his name
+        
             builder.Prompts.text(session, "Hello, what is your name?");
-        } else {
-            // user has visited earlier, begin welcome dialog
-            session.replaceDialog('/Welcome');
-        }
+        
     },
     //save user name to json file and set dialog data
     function(session, results) {
@@ -84,8 +67,14 @@ dialog.matches('Greeting', [
         // begin welcome dialog
         session.replaceDialog('/Welcome');
     }
-]);
+])
+.onDefault((session) => {
+    session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+});
 
+bot.dialog('/', dialog);
+
+// Add intent handlers
 
 if (useEmulator) {
     var restify = require('restify');
