@@ -92,7 +92,7 @@ bot.dialog('/Welcome', [
         if(isFromCancelDialog && !isInWelcomeDialog){
             // user has cancelled some dialog
             // show appropriate message
-            builder.Prompts.text(session, "Your action has been cancelled. Please type menu or profile for options.");
+            builder.Prompts.text(session, "Your order has been cancelled. Please type menu or profile for options.");
             isFromCancelDialog = false;
         }
         else if (!isInWelcomeDialog) {
@@ -237,7 +237,7 @@ bot.dialog('/Confirmation', [
         // user agreed
         if (results.response.toUpperCase() == "YES" || results.response.toUpperCase() == "Y") {
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
-
+	    session.replaceDialog('/');
         }
         // user cancelled order
         else if (results.response.toUpperCase() == "NO" || results.response.toUpperCase() == "N") {
