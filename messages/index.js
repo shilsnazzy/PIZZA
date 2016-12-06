@@ -44,16 +44,16 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
-var dialog= new builder.IntentDialog({ recognizers: [recognizer] })
+var dialog= new builder.IntentDialog({ recognizers: [recognizer] });
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
-.matches('None', (session, args) => {
+dialog.matches('None', (session, args) => {
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
 session.sebnd(JSON.stringify(session));
 session.send(args)
-})
-.matches('Greeting', [
+});
+dialog.matches('Greeting', [
 
     function(session) {
         
@@ -69,8 +69,8 @@ session.send(args)
         // begin welcome dialog
         session.replaceDialog('/Welcome');
     }
-])
-.onDefault((session) => {
+]);
+dialog.onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
 
