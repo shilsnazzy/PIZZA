@@ -160,13 +160,13 @@ bot.dialog('/Profile', [
 // Add intent handlers
 dialog.matches('OrderPizza', function(session, args, next) {
     // if pizza is null, create empty pizza
-    if (!session.userData.userName.pizza)
-        session.userData.userName.pizza = lib.getEmptyPizza();
-    session.userData.userName.pizza = lib.parsePizza(session.userData.userName.pizza, args.entities);
-    session.userData.userName.pizza = lib.polishPizza(session.userData.userName.pizza);
+    if (!session.userData.pizza)
+        session.userData.pizza = lib.getEmptyPizza();
+    session.userData.pizza = lib.parsePizza(session.userData.pizza, args.entities);
+    session.userData.pizza = lib.polishPizza(session.userData.pizza);
     lib.newLine();
-    console.log(session.userData.userName.pizza);
-    //session.send(lib.userReadablePizzaString(session.userData.userName.pizza));
+    console.log(session.userData.pizza);
+    //session.send(lib.userReadablePizzaString(session.userData.pizza));
     session.replaceDialog('/VerifyOrder');
 });
 
@@ -174,26 +174,26 @@ dialog.matches('OrderPizza', function(session, args, next) {
 bot.dialog('/VerifyOrder', [
 
     function(session, args, next) {
-        if (!session.userData.userName.pizza.size || session.userData.userName.pizza.size == "" || session.userData.userName.pizza.size == '') {
-            console.log("session.userData.userName.pizza.size : " + session.userData.userName.pizza.size);
+        if (!session.userData.pizza.size || session.userData.pizza.size == "" || session.userData.pizza.size == '') {
+            console.log("session.userData.pizza.size : " + session.userData.pizza.size);
             var prompt = "Do you want small, medium or large pizza?";
             session.send(prompt);
             // call root dialog, so that we can parse user response with LUIS
             session.beginDialog('/');
-        } else if (!session.userData.userName.pizza.crust || session.userData.userName.pizza.crust == "" || session.userData.userName.pizza.crust == '') {
-            console.log("session.userData.userName.pizza.crust : " + session.userData.userName.pizza.crust);
+        } else if (!session.userData.pizza.crust || session.userData.pizza.crust == "" || session.userData.pizza.crust == '') {
+            console.log("session.userData.pizza.crust : " + session.userData.pizza.crust);
             var prompt = "Would you like thin crust or regular crust pizza?";
             session.send(prompt);
             // call root dialog, so that we can parse user response with LUIS
             session.beginDialog('/');
-        } else if (!session.userData.userName.pizza.sauce || session.userData.userName.pizza.sauce == "" || session.userData.userName.pizza.sauce == '') {
-            console.log("session.userData.userName.pizza.sauce : " + session.userData.userName.pizza.sauce);
+        } else if (!session.userData.pizza.sauce || session.userData.pizza.sauce == "" || session.userData.pizza.sauce == '') {
+            console.log("session.userData.pizza.sauce : " + session.userData.pizza.sauce);
             var prompt = "What sauce would you like?";
             session.send(prompt);
             // call root dialog, so that we can parse user response with LUIS
             session.beginDialog('/');
-        } else if (!session.userData.userName.pizza.toppings || session.userData.userName.pizza.toppings == "" || session.userData.userName.pizza.toppings == '') {
-            console.log("session.userData.userName.pizza.toppings : " + session.userData.userName.pizza.toppings);
+        } else if (!session.userData.pizza.toppings || session.userData.pizza.toppings == "" || session.userData.pizza.toppings == '') {
+            console.log("session.userData.pizza.toppings : " + session.userData.pizza.toppings);
             var prompt = "Do you like to add some toppings?";
             session.send(prompt);
             // call root dialog, so that we can parse user response with LUIS
@@ -226,7 +226,7 @@ bot.dialog('/Confirmation', [
 
     function(session) {
         if (isInConfirmationDialog == false) {
-            session.send(lib.userReadablePizzaString(session.userData.userName.pizza) + "\nYour pizza will be delievered at " + session.userData.userAddress + ".");
+            session.send(lib.userReadablePizzaString(session.userData.pizza) + "\nYour pizza will be delievered at " + session.userData.userAddress + ".");
             builder.Prompts.text(session, "Do you want to place your order?");
         } else if (isInConfirmationDialog) {
             builder.Prompts.text(session, "Sorry, I didn\'t catch that, Please respond in yes or no");
@@ -237,11 +237,11 @@ bot.dialog('/Confirmation', [
         // user agreed
         if (results.response.toUpperCase() == "YES" || results.response.toUpperCase() == "Y") {
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
-            lib.saveToDB(session.userData.userName, session.userData.userAddress, session.userData.userName.pizza);
+            lib.saveToDB(session.userData.userName, session.userData.userAddress, session.userData.pizza);
 	    //session.beginDialog('/Welcome');
 	    sleep(1000, function() {
             // executes after one second, and blocks the thread
-            session.userData.userName.pizza = null;
+            session.userData.pizza = null;
             });      
         }
         // user cancelled order
@@ -259,7 +259,7 @@ bot.dialog('/Confirmation', [
 bot.dialog('/CancelOrder', [
 
     function(session) {
-        session.userData.userName.pizza = null;
+        session.userData.pizza = null;
         isFromProfile = false;
         isInConfirmationDialog = false;
         isInWelcomeDialog = false;
