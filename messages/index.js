@@ -237,7 +237,8 @@ bot.dialog('/Confirmation', [
         // user agreed
         if (results.response.toUpperCase() == "YES" || results.response.toUpperCase() == "Y") {
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
-	    session.beginDialog('/Welcome');
+	    //session.beginDialog('/Welcome');
+            pizza = null;
         }
         // user cancelled order
         else if (results.response.toUpperCase() == "NO" || results.response.toUpperCase() == "N") {
