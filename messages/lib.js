@@ -31,12 +31,13 @@ exports.saveToDB = function(username, address, pizza) {
         var query = "insert into dbo.orders values( " +
             "'" + username + "'," +
             " '" + address + "'," +
+            " '" + time + "');";
             " '" + pizza.size + "'," +
-            " '" + pizza.toppings + "'," +
             " '" + pizza.crust + "'," +
+            " '" + pizza.toppings + "'," +            
             " '" + pizza.sauce + "'," +
             " '" + pizza.price + "'," +
-            " '" + time + "');";
+           
         console.log(query);
         var request = new Request(query, function(err, rowCount) {
             if (err) {
