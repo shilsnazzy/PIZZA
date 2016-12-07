@@ -239,7 +239,10 @@ bot.dialog('/Confirmation', [
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
             lib.saveToDB(session.userData.userName, session.userData.userAddress, pizza);
 	    //session.beginDialog('/Welcome');
+	    sleep(1000, function() {
+            // executes after one second, and blocks the thread
             pizza = null;
+            });      
         }
         // user cancelled order
         else if (results.response.toUpperCase() == "NO" || results.response.toUpperCase() == "N") {
@@ -285,4 +288,12 @@ if (useEmulator) {
     server.post('/api/messages', connector.listen());    
 } else {
     module.exports = { default: connector.listen() }
+}
+
+function sleep(time, callback) {
+    var stop = new Date().getTime();
+    while(new Date().getTime() < stop + time) {
+        ;
+    }
+    callback();
 }
