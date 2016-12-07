@@ -122,7 +122,7 @@ bot.dialog('/Welcome', [
 bot.dialog('/Menu', [
 
     function(session) {
-        session.send("Toppings: Beef, Bacon, Cheese, Olives, Chicken, Jalapeno, Mushroom, Onions, Pepperoni, Peppers, Pineapple, Tomatoes.\n\nSauce: Alfredo, Marinara, Traditional.\n\nCrust: Thin, Regular.\n\nNow, build your own pizza.");
+        session.send("Toppings: Beef, Bacon, Cheese, Olives, Chicken, Jalapeno, Mushroom, Onions, Pepperoni, Peppers, Pineapple, Tomatoes.\n\nSauce: Alfredo, Marinara, Traditional.\n\nCrust: Thin, Pan.\n\nNow, build your own pizza.");
         session.replaceDialog('/');
     }
 ]);
@@ -182,7 +182,7 @@ bot.dialog('/VerifyOrder', [
             session.beginDialog('/');
         } else if (!session.userData.pizza.crust || session.userData.pizza.crust == "" || session.userData.pizza.crust == '') {
             console.log("session.userData.pizza.crust : " + session.userData.pizza.crust);
-            var prompt = "Would you like thin crust or regular crust pizza?";
+            var prompt = "Would you like thin crust or pan pizza?";
             session.send(prompt);
             // call root dialog, so that we can parse user response with LUIS
             session.beginDialog('/');
@@ -239,7 +239,7 @@ bot.dialog('/Confirmation', [
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
             lib.saveToDB(session.userData.userName, session.userData.userAddress, session.userData.pizza);
 	    //session.beginDialog('/Welcome');
-	    sleep(1000, function() {
+	    sleep(2000, function() {
             // executes after one second, and blocks the thread
             session.userData.pizza = null;
             });      
