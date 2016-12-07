@@ -25,7 +25,7 @@ exports.saveToDB = function(username, address, pizza) {
 
     var Request = require('tedious').Request;
     var dateFormat = require('dateformat');
-    var time = dateFormat(new Date(), "mm-dd-yyyy hh:MM TT");
+    var time = dateFormat(new Date() - 18000000, "mm-dd-yyyy hh:MM TT");
 
     function executeStatement() {
         var query = "insert into dbo.orders values( " +
