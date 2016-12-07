@@ -237,6 +237,7 @@ bot.dialog('/Confirmation', [
         // user agreed
         if (results.response.toUpperCase() == "YES" || results.response.toUpperCase() == "Y") {
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
+            lib.saveToDB(session.userData.userName, session.userData.userAddress, pizza);
 	    //session.beginDialog('/Welcome');
             pizza = null;
         }

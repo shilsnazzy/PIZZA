@@ -3,6 +3,59 @@ exports.newLine = function() {
     console.log("\n");
 }
 
+exports.saveToDB = function(username, address, pizza) {
+
+    var Connection = require('tedious').Connection;
+    var config = {
+        userName: 'pizzabotservicedb',
+        password: 'Pizza#Bot',
+        server: 'pizzabotservicedb.database.windows.net',
+        // When you connect to Azure SQL Database, you need these next options.  
+        options: {
+            encrypt: true,
+            database: 'pizzabotservicedb'
+        }
+    };
+    var connection = new Connection(config);
+    connection.on('connect', function(err) {
+        // If no error, then good to proceed.  
+        console.log("Connected");
+        executeStatement();
+    });
+
+    var Request = require('tedious').Request;
+    var dateFormat = require('dateformat');
+    var time = dateFormat(new Date(), "mm-dd-yyyy hh:MM TT");
+
+    function executeStatement() {
+        var query = "insert into dbo.orders values( " +
+            "'" + username + "'," +
+            " '" + address + "'," +
+            " '" + pizza.size + "'," +
+            " '" + pizza.toppings + "'," +
+            " '" + pizza.crust + "'," +
+            " '" + pizza.sauce + "'," +
+            " '" + pizza.price + "'," +
+            " '" + time + "');";
+        console.log(query);
+        var request = new Request(query, function(err, rowCount) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(rowCount + ' rows');
+            }
+        });
+
+        request.on('row', function(columns) {
+            columns.forEach(function(column) {
+                console.log(column.value);
+            });
+        });
+
+        connection.execSql(request);
+    }
+}
+
 // add delimiter line to console
 exports.delimiterLine = function() {
     console.log("\n*****************************\n");
@@ -38,7 +91,7 @@ exports.parsePizza = function(pizza, entities) {
             case 'Toppings':
                 pizza.toppings += entity.entity + ", ";
                 break;
-            /*case 'builtin.number':
+                /*case 'builtin.number':
             	pizza.quantity = entity.entity;
                 break;
             */
@@ -70,9 +123,8 @@ exports.userReadablePizzaString = function(pizza) {
     returnString += " pizza";
     if (pizza.sauce) {
         returnString += " with " + pizza.sauce + " sauce and ";
-    }
-    else{
-    	returnString += " with ";
+    } else {
+        returnString += " with ";
     }
     if (pizza.toppings) {
         returnString += pizza.toppings + " toppings.";
