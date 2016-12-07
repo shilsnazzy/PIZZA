@@ -182,7 +182,7 @@ bot.dialog('/VerifyOrder', [
             session.beginDialog('/');
         } else if (!pizza.crust || pizza.crust == "" || pizza.crust == '') {
             console.log("pizza.crust : " + pizza.crust);
-            var prompt = "Would you like thin crust or hand tossed pizza?";
+            var prompt = "Would you like thin crust, pan or hand tossed pizza?";
             session.send(prompt);
             // call root dialog, so that we can parse user response with LUIS
             session.beginDialog('/');
@@ -237,7 +237,7 @@ bot.dialog('/Confirmation', [
         // user agreed
         if (results.response.toUpperCase() == "YES" || results.response.toUpperCase() == "Y") {
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
-	    session.replaceDialog('/');
+	    session.beginDialog('/Welcome');
         }
         // user cancelled order
         else if (results.response.toUpperCase() == "NO" || results.response.toUpperCase() == "N") {
