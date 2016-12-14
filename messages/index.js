@@ -34,7 +34,7 @@ var isInWelcomeDialog = false;
 //
 var isFromCancelDialog = false;
 
-
+var counter=0;
 var bot = new builder.UniversalBot(connector);
 
 // Make sure you add code to validate these fields
@@ -237,7 +237,8 @@ bot.dialog('/Confirmation', [
         // user agreed
         if (results.response.toUpperCase() == "YES" || results.response.toUpperCase() == "Y") {
             session.endDialog("Thank you for your order. You will recieve your delicious pizza within 25 minutes.");
-            lib.saveToDB(session.userData.userName, session.userData.userAddress, session.userData.pizza);
+			counter=counter+1;
+            lib.saveToDB(session.userData.userName, session.userData.userAddress, session.userData.pizza,counter);
 	    //session.beginDialog('/Welcome');
 	    sleep(2000, function() {
             // executes after one second, and blocks the thread

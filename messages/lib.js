@@ -3,7 +3,7 @@ exports.newLine = function() {
     console.log("\n");
 }
 
-exports.saveToDB = function(username, address, pizza) {
+exports.saveToDB = function(username, address, pizza, counter) {
 
     var Connection = require('tedious').Connection;
     var config = {
@@ -36,7 +36,9 @@ exports.saveToDB = function(username, address, pizza) {
             " '" + pizza.crust + "'," +
             " '" + pizza.toppings + "'," +            
             " '" + pizza.sauce + "'," +
-            " '" + pizza.price + "');";
+            " '" + pizza.price + "'," +
+			" '" + counter + "'," +
+			" '" + 0 + "');";
            
         console.log(query);
         var request = new Request(query, function(err, rowCount) {
